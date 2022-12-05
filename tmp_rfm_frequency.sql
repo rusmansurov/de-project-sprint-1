@@ -17,11 +17,10 @@ WITH RANK_COUNT_ORDERS AS
     (
         SELECT
             "user_id"
-            , COUNT(order_id) order_cnt
+            , COUNT(CASE WHEN "status" = 4 THEN order_id END) order_cnt
         FROM "analysis"."orders"
         WHERE
-            "status" = 4
-            AND EXTRACT(YEAR FROM "order_ts") >= 2022
+            EXTRACT(YEAR FROM "order_ts") >= 2022
         GROUP BY "user_id"
     ) T
 )

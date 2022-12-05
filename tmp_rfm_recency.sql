@@ -19,11 +19,10 @@ WITH RANK_MAX_USER_ORDERS AS
     (
         SELECT
             "user_id"
-            , MAX("order_ts") order_ts
+            , MAX(CASE WHEN "status" = 4 THEN "order_ts" ELSE CAST('1900-01-01' AS TIMESTAMP) END) order_ts
         FROM "analysis"."orders"
         WHERE
-            "status" = 4
-            AND EXTRACT(YEAR FROM "order_ts") >= 2022
+            EXTRACT(YEAR FROM "order_ts") >= 2022
         GROUP BY "user_id"
     ) T
 )

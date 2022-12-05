@@ -17,11 +17,10 @@ WITH RANK_SUM_ORDERS AS
     (
         SELECT 
             "user_id"
-            , SUM(payment) sum_payment
+            , SUM(CASE WHEN "status" = 4 THEN payment ELSE 0 END) sum_payment
         FROM "analysis"."orders"
         WHERE
-            "status" = 4
-            AND EXTRACT(YEAR FROM "order_ts") >= 2022
+            EXTRACT(YEAR FROM "order_ts") >= 2022
         GROUP BY "user_id"
     ) T
 )
